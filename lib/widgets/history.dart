@@ -7,10 +7,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_constants/edu_Icons.dart';
 import '../app_constants/edu_colors.dart';
+import '../modals/flowChart_modal.dart';
 import '../providers/course_provider.dart';
 
+
 class HistoryPage extends ConsumerWidget {
-  const HistoryPage({super.key});
+   HistoryPage({super.key});
+
+ final List<BarData> timeSpentData = [
+  BarData("Mon", 13, 1),
+  BarData("Tue", 9, 2),
+  BarData("Wed", 3, 3,),
+  BarData("Thu", 13, 4),
+  BarData("Fri", 12, 5),
+  BarData("Sut", 4, 6),
+  BarData("Sun", 12, 7),
+ ];
+
+
+ final List<BarData> pasedTestData = [BarData(1, 13,0),
+  BarData("2", 9,1),
+  BarData("3", 8,2),
+  BarData("4", 14,3),
+  BarData("5", 5,4),
+  BarData("6", 11,5),
+  BarData("7", 12,6),
+  BarData("8", 4,7),
+  BarData("9", 12,8)
+  ];
+
 
   @override
   Widget build(BuildContext context ,WidgetRef ref) {
@@ -40,7 +65,7 @@ class HistoryPage extends ConsumerWidget {
                 const SizedBox(height: 18.0),
                 SizedBox(
                   height: 170,
-                  child: appTimeBarChart(context),
+                  child: appTimeBarChart(context, timeSpentData, 24),
                 ),
               ],
             ),
@@ -67,7 +92,7 @@ class HistoryPage extends ConsumerWidget {
                 const SizedBox(height: 18.0),
                 SizedBox(
                   height: 170,
-                  child: appTimeBarChart(context),
+                  child: appTimeBarChart(context, pasedTestData , 15),
                 ),
               ],
             ),
@@ -151,51 +176,46 @@ class HistoryPage extends ConsumerWidget {
     );
   }
 
+   Widget getTitles(double value, TitleMeta meta) {
+    // if (value == 0) {
+    //   return SideTitleWidget(
+    //       axisSide: meta.axisSide,
+    //       child: const Text(
+    //         "0",
+    //       ));
+    // } else {
+      return SideTitleWidget(
+        space: 1,
+        axisSide: meta.axisSide,
+        // angle: 45,
+        child: Text(timeSpentData[value.toInt()].title),
+      );
+  }
 
-  Widget appTimeBarChart(BuildContext context) {
+
+  Widget appTimeBarChart(BuildContext context, var data, double maxY) {
     return  BarChart(
       BarChartData(
       // backgroundColor: const Color(0xFFBFC3FC).withOpacity(0.3),
-      maxY: 15,
+      maxY: maxY,
       minY: 0,
       baselineY: 0,
-      // alignment: BarChartAlignment.spaceBetween,
-      titlesData: FlTitlesData(topTitles: AxisTitles(), rightTitles: AxisTitles()),
+      titlesData: FlTitlesData(topTitles: AxisTitles(), rightTitles: AxisTitles(), 
+      // bottomTitles: AxisTitles(sideTitles: SideTitles(
+      //   getTitlesWidget:getTitles        
+      // ))
+      ),
       gridData: FlGridData(
         show: false
       ),
         borderData: FlBorderData(
           show: false,
            ),
-        groupsSpace: 20,
         barGroups: [
-            BarChartGroupData(x: 1, 
+          for(BarData item in data)
+              BarChartGroupData(x: item.x, 
             barRods: [
-            BarChartRodData(fromY: 0, toY: 10, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 2, barRods: [
-            BarChartRodData(fromY: 0, toY: 10, width: 15, color:const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 3, barRods: [
-            BarChartRodData(fromY: 0, toY: 15, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 4, barRods: [
-            BarChartRodData(fromY: 0, toY: 10, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 5, barRods: [
-            BarChartRodData(fromY: 0, toY: 12, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 6, barRods: [
-            BarChartRodData(fromY: 0, toY: 10, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 7, barRods: [
-            BarChartRodData(fromY: 0, toY: 13, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-            BarChartGroupData(x: 8, barRods: [
-            BarChartRodData(fromY: 0, toY: 14, width: 15, color: const Color(0xFFA2C3FC)),
-          ]),
-          BarChartGroupData(x: 9, barRods: [
-            BarChartRodData(fromY: 0, toY: 6, width: 15, color: const Color(0xFFA2C3FC)),
+            BarChartRodData(fromY: 0, toY: item.y, width: 15, color: const Color(0xFFA2C3FC)),
           ]),
         ]));
         }

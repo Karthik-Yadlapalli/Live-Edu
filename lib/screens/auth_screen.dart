@@ -40,15 +40,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
   bool hidePassword = true;
 
-
   //*snackbar
   void showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
-      content: Center(child: Text(message, style: const TextStyle(color: Colors.red),)),
+      content: Center(child: Text(message, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w400),)),
       backgroundColor: Colors.white,
       behavior: SnackBarBehavior.floating,
       dismissDirection: DismissDirection.none,
-      elevation: 20,
+      margin: const EdgeInsets.only(bottom:110, top: 0,right: 50, left: 50),
+      elevation: 3,
+      shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(10)),
       duration: const Duration(milliseconds: 2000),
       
     );
@@ -64,6 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
         child: CircularProgressIndicator(),
       );
     });
+
 
     //*loging user in
   try{
@@ -103,7 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
   if (e.code == 'weak-password') {
      return showSnackBar(context, 'Password is too weak');
   } else if (e.code == 'email-already-in-use') {
-    return showSnackBar(context, 'Email is already registerd, login with password');
+    return showSnackBar(context, 'Email is already registerd');
   }
 } catch (e) {
  return showSnackBar(context, '$e');
@@ -193,6 +195,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         onFieldSubmitted: (_) {
                           FocusScope.of(context).requestFocus(_emailFocusNode);
                         },
+                        validator: (value) {
+                          if(value == null || value.isEmpty){
+                            return "Please enter name";
+                          }
+                        },
                         decoration: InputDecoration(
                           fillColor: const Color(0xFFBFC3FC).withOpacity(0.3),
                           hoverColor: const Color(0xFFA2C3FC),
@@ -255,7 +262,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           if(value == null || value.isEmpty){
                             return "Please Enter phone number";
                           }else if(value.length != 10){
-                            return "Please Enter valid phone number";
+                            return "Please enter valid phone number";
                           }
                           return null; //Return null if number is valid 
                         },
