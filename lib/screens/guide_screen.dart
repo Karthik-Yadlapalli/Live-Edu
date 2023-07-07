@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:live_edu/widgets/auth_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../app_constants/edu_colors.dart';
 import '../utils/page_button.dart';
-import 'auth_screen.dart';
 
 
 class GuideScreen extends StatelessWidget {
   GuideScreen({super.key});
   final _controller = PageController();
+
+
+//*setting flag for first time user and storing in device once the user visits the GuideScreen
+  void setFirstTimeUserFlag() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isFirstTime', true);
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +52,13 @@ class GuideScreen extends StatelessWidget {
                   SizedBox(height: MediaQuery.of(context).size.height*0.05,),
                     Center(
                       child: PageButton(buttonText: 'Next', buttonTap: () {
+                        setFirstTimeUserFlag();
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AuthPage() ));
                       },),
                     )
                 ],
               ),
             ),
-          
           ],
         ),
       ),
