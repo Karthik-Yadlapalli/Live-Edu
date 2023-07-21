@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../modals/course.dart';
 
 class CourseManager extends ChangeNotifier{
@@ -12,5 +11,14 @@ class CourseManager extends ChangeNotifier{
   ];
 
   List<Course> get courses => _courses;
+
+ //*Add new courses
+  void addCourse(){}
+
+//*Deleteing existing courses
+  void deleteCourse(){} 
+
+//*Updateing existing course
+  void updateCourse(){}
 
 }

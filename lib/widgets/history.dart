@@ -24,18 +24,18 @@ class HistoryPage extends ConsumerWidget {
   BarData("Sun", 12, 7),
  ];
 
-
- final List<BarData> pasedTestData = [BarData(1, 13,0),
-  BarData("2", 9,1),
-  BarData("3", 8,2),
-  BarData("4", 14,3),
-  BarData("5", 5,4),
-  BarData("6", 11,5),
-  BarData("7", 12,6),
-  BarData("8", 4,7),
-  BarData("9", 12,8)
+ final List<BarData> pasedTestData = [
+  BarData("1", 13,1),
+  BarData("2", 9,2),
+  BarData("3", 8,3),
+  BarData("4", 14,4),
+  BarData("5", 5,5),
+  BarData("6", 11,6),
+  BarData("7", 12,7),
+  BarData("8", 4,8),
+  BarData("9", 12,9),
+  BarData("9", 15,10),
   ];
-
 
   @override
   Widget build(BuildContext context ,WidgetRef ref) {
@@ -58,7 +58,7 @@ class HistoryPage extends ConsumerWidget {
                     Icon(Icons.bar_chart,color:  Color(0xFFBFC3FC)),
                     Padding(
                       padding: EdgeInsets.only(left:8.0),
-                      child: Text('Time spent in app'),
+                      child: Text('Time spent on app in last week'),
                     )
                   ],
                 ),
@@ -85,14 +85,14 @@ class HistoryPage extends ConsumerWidget {
                     Icon(Icons.bar_chart,color:  Color(0xFFBFC3FC)),
                     Padding(
                       padding: EdgeInsets.only(left:8.0),
-                      child: Text('Passed Tests'),
+                      child: Text('Progress for past 10 days'),
                     )
                   ],
                 ),
                 const SizedBox(height: 18.0),
                 SizedBox(
                   height: 170,
-                  child: appTimeBarChart(context, pasedTestData , 15),
+                  child: progress(context, pasedTestData , 15),
                 ),
               ],
             ),
@@ -101,7 +101,6 @@ class HistoryPage extends ConsumerWidget {
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 18),
-            
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -176,34 +175,14 @@ class HistoryPage extends ConsumerWidget {
     );
   }
 
-   Widget getTitles(double value, TitleMeta meta) {
-    // if (value == 0) {
-    //   return SideTitleWidget(
-    //       axisSide: meta.axisSide,
-    //       child: const Text(
-    //         "0",
-    //       ));
-    // } else {
-      return SideTitleWidget(
-        space: 1,
-        axisSide: meta.axisSide,
-        // angle: 45,
-        child: Text(timeSpentData[value.toInt()].title),
-      );
-  }
 
-
-  Widget appTimeBarChart(BuildContext context, var data, double maxY) {
+    Widget progress(BuildContext context, var data, double maxY) {
     return  BarChart(
       BarChartData(
-      // backgroundColor: const Color(0xFFBFC3FC).withOpacity(0.3),
       maxY: maxY,
       minY: 0,
       baselineY: 0,
-      titlesData: FlTitlesData(topTitles: AxisTitles(), rightTitles: AxisTitles(), 
-      // bottomTitles: AxisTitles(sideTitles: SideTitles(
-      //   getTitlesWidget:getTitles        
-      // ))
+      titlesData: FlTitlesData(topTitles: AxisTitles(), rightTitles: AxisTitles()
       ),
       gridData: FlGridData(
         show: false
@@ -219,5 +198,59 @@ class HistoryPage extends ConsumerWidget {
           ]),
         ]));
         }
+
+
+  Widget appTimeBarChart(BuildContext context, var data, double maxY) {
+    return  BarChart(
+      BarChartData(
+      maxY: maxY,
+      minY: 0,
+      baselineY: 0,
+      titlesData: FlTitlesData(topTitles: AxisTitles(), rightTitles: AxisTitles(), bottomTitles: AxisTitles(sideTitles: _bottomTitles)
+      ),
+      gridData: FlGridData(
+        show: false
+      ),
+        borderData: FlBorderData(
+          show: false,
+           ),
+        barGroups: [
+          for(BarData item in data)
+              BarChartGroupData(x: item.x, 
+            barRods: [
+            BarChartRodData(fromY: 0, toY: item.y, width: 15, color: const Color(0xFFA2C3FC)),
+          ]),
+        ]));
+        }
+
+  SideTitles get _bottomTitles => SideTitles(
+    showTitles: true,
+    getTitlesWidget: (value, meta) {
+      String text = '';
+      switch (value.toInt()) {
+        case 1:
+          text = 'Mon';
+          break;
+        case 2:
+          text = 'Tue';
+          break;
+        case 3:
+          text = 'Wed';
+          break;
+        case 4:
+          text = 'Thu';
+          break;
+        case 5:
+          text = 'Fri';
+          break;
+        case 6:
+          text = 'Sat';
+          break;
+        case 7:
+          text = 'Sun';
+          break;
+      }
+      return Text(text);
+    },
+  );
   }
-  

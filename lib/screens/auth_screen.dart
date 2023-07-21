@@ -2,14 +2,12 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:live_edu/app_constants/edu_Icons.dart';
 import 'package:live_edu/app_constants/edu_colors.dart';
 import '../utils/page_button.dart';
-import 'home_screen.dart'; 
 
 enum AuthMode{login , signUp}
 
@@ -24,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   var _authMode = AuthMode.login;
 
-  //*
+  //*variables
   var _enterdemail = '';
   var _enterdPassword = '';
 
@@ -40,17 +38,18 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordFocusNode = FocusNode();
   final _nameFocusNode = FocusNode();
   
+  //*bool value to controll the visiblity of password
   bool hidePassword = true;
 
   //*Login user
   void _login() async{
+
     //*loading indicator
     showDialog(context: context, builder: (context){
       return const Center(
         child: CircularProgressIndicator(),
       );
     });
-
 
     //*loging user in
   try{
@@ -81,7 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   //*creating a new user
    try {
-  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+   await FirebaseAuth.instance.createUserWithEmailAndPassword(
     email: _enterdemail,
     password: _enterdPassword,
   );
@@ -122,9 +121,7 @@ class _AuthScreenState extends State<AuthScreen> {
           _passwordFocusNode.unfocus();
           _nameFocusNode.unfocus();
           _phoneFocusNode.unfocus();
-          setState(() {
-            
-          });
+          setState(() {});
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
