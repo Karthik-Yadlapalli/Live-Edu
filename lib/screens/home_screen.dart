@@ -68,7 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        Expanded(child: SizedBox(child: _pages[_selectedIndex],))
+        SizedBox(
+          height: MediaQuery.of(context).size.height-206,
+          child: _pages[_selectedIndex],)
       ],),
       bottomNavigationBar: BottomNavigationBar(
         
